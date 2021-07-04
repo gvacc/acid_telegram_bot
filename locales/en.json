@@ -1,0 +1,87 @@
+{
+	"scenes": {
+		"start": {
+			"welcome_back": "Hello again!",
+		    "bot_description": "Hello, i'm helper for ACIDBRO"
+		},
+		"admin": {
+			"welcome_description": "This is admin panel. It see only administrators",
+			"groups": {
+				"groupsIsEmpty": "You dont have any groups"
+			}
+		},
+		"sendMessageToGroup": {
+			"input_message": "Input your message"
+		},
+		"addButton": {
+			"enter_url": "Enter URL of button",
+			"enter_name": "Enter Name of button",
+			"saved": "Saved!",
+			"not_valid_url": "URl is not valid, try again..."
+		},
+		"removeButton": {
+			"which_delete": "Which button do you wanna delete ? ⬇️",
+			"deleted": "Deleted!"
+		},
+		"changeWelcomeMessage": {
+			"input_message": "<b>Please, input your message:</b>\n<code>{fullname}</code> - for full name\n<code>{userId}</code> - for name with id\n<code>{name}</code> - for name\n\n<code>You can use html tags</code>"
+		},
+		"buttonsInlineMenu": {
+			"add_button": "Add button",
+			"delete_button": "Delete button"
+		}
+	},
+	"keyboards": {
+		"admin_keyboard": {
+			"statistics": "Statistics",
+			"groups": "My groups",
+			"send_message": "Send message",
+			"change_language": "Change language"
+		}
+	},
+	"messagesText": {
+		"groupInfo": {
+			"name": "Name",
+			"language": "Language of group",
+			"type": "Тип группы",
+			"username": "Username",
+			"number_users": "Number of users",
+			"captcha": "Status of captcha"
+		}
+	},
+	"settings": {
+		"groupSettings": {
+			"welcome_message": "Welcome message",
+			"captcha": {
+				"disable_captcha": "Disable captcha ❌",
+				"enable_captcha": "Enable captcha ✅"
+			},
+			"send_message_to_group": "Send message to group",
+			"change_language": {
+				"change_language_to_en": "Change language",
+				"change_language_to_ru": "Change language"
+			},
+			"change_type": "Change type of group",
+			"next_group": "↪️"
+		},
+		"welcomeMessageSettings": {
+			"change_welcome_message": "Change welcome message",
+			"see_welcome_messsage": "See welcome message",
+			"add_delete_buttons": "Add or delete buttons"
+		},
+		"back_to_settings": "Back to menu"
+	},
+	"notify": {
+		"open_see_message_menu": "Menu is open",
+		"back_to_settings": "Returned to settings",
+		"captcha_disabled": "Captcha disabled",
+		"captcha_enabled": "Captcha enabled",
+		"type_changed": "Type changed",
+		"language_changed": "Language changed: ",
+		"group_is_not_valid": "Ssory, this group is not valid, telegram can't send message in old group",
+		"group_message_sent": "message sent!"
+	},
+	"other": {
+		"missing": "Missing"
+	}
+}

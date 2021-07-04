@@ -1,0 +1,87 @@
+{
+	"scenes": {
+		"start": {
+			"welcome_back": "Еще раз здравствуйте",
+		    "bot_description": "Здравствуйте, я бот помощник для группы ACIDBRO"
+		},
+		"admin": {
+			"welcome_description": "Это админ панель, ее видят только администраторы",
+			"groups": {
+				"groupsIsEmpty": "Вы еще не добавили ни одну группу"
+			}
+		},
+		"sendMessageToGroup": {
+			"input_message": "Напишите ваше сообщение"
+		},
+		"addButton": {
+			"enter_url": "Отправьте ссылку кнопки",
+			"enter_name": "Введите имя кнопки",
+			"saved": "Готово!",
+			"not_valid_url": "Ссылка не валидная, попробуйте еще раз..."
+		},
+		"removeButton": {
+			"which_delete": "Какую кнопку вы хотите удалить ? ⬇️",
+			"deleted": "Удалено!"
+		},
+		"changeWelcomeMessage": {
+			"input_message": "<b>Пожалуйста, введите ваше сообщение:</b>\n<code>{fullname}</code> - для указания полного имени\n<code>{userId}</code> - для указании ид вместе с именем\n<code>{name}</code> - для указания имени\n\n<code>Так-же поддерживаются html теги</code>"
+		},
+		"buttonsInlineMenu": {
+			"add_button": "Добавить кнопку",
+			"delete_button": "Удалить кнопку"
+		}
+	},
+	"keyboards": {
+		"admin_keyboard": {
+			"statistics": "Статистика",
+			"groups": "Мои группы",
+			"send_message": "Отправить сообщения",
+			"change_language": "Сменить язык"
+		}
+	},
+	"messagesText": {
+		"groupInfo": {
+			"name": "Имя",
+			"language": "Язык группы",
+			"type": "Тип группы",
+			"username": "Username",
+			"number_users": "Количество пользователей",
+			"captcha": "Статус каптчи"
+		}
+	},
+	"settings": {
+		"groupSettings": {
+			"welcome_message": "Приветственное сообщeние",
+			"captcha": {
+				"disable_captcha": "Отключить каптчу ❌",
+				"enable_captcha": "Включить каптчу ✅"
+			},
+			"send_message_to_group": "Отправить сообщение группе",
+			"change_language": {
+				"change_language_to_en": "Сменить язык",
+				"change_language_to_ru": "Сменить язык"
+			},
+			"change_type": "Сменить тип группы",
+			"next_group": "↪️"
+		},
+		"welcomeMessageSettings": {
+			"change_welcome_message": "Изменить сообщение",
+			"see_welcome_messsage": "Посмотреть как выглядит сообщение",
+			"add_delete_buttons": "Добавить/удалить кнопки"
+		},
+		"back_to_settings": "Назад в меню"
+	},
+	"notify": {
+		"open_see_message_menu": "Меню открыто",
+		"back_to_settings": "Вернулись к настройкам",
+		"captcha_disabled": "Каптча выключена",
+		"captcha_enabled": "Капча включена",
+		"language_changed": "Язык сменен: ",
+		"type_changed": "Тип сменен",
+		"group_is_not_valid": "Простите, но эта группа не валидна, телеграм не позволяет отправлять в группы со старым id",
+		"group_message_sent": "Сообщение отправлено"
+	},
+	"other": {
+		"missing": "Отсутствует"
+	}
+}
