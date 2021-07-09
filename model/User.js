@@ -13,7 +13,8 @@ const schema = new Schema({
 	kickedCount: {type: Number, default: 0},
 	messagesForDelete: {type: Array},
 	incorrectAnswers: {type: Number, default: 0},
-	phone: {type: String, default: ''}
+	phone: {type: String, default: ''},
+	mail: {type: String, default: ''}
 })
 
 module.exports = model('User', schema)

@@ -5,13 +5,16 @@ const getTemplateForWelcomeMessage = (message, first_name, last_name, telegramId
 	return message.replace('{name}', first_name).replace('{fullname}', `${first_name} ${last_name}`).replace('{userId}', `<a href="tg://user?id=${telegramId}">${first_name.substring(0, 15)}</a>`)
 }
 
-const getTemplateForSavedNumber = (ctx) => {
-return `
+const getTemplateForSend = (ctx) => {
+	const template = `
 <code>Отправлен номер телефона:</code>
 Имя: <b>${ctx.update.message.from.first_name} ${ctx.update.message.from.last_name ? ctx.update.message.from.last_name : '' }</b>
 Юзернейм: <b>${ctx.update.message.from.username ? '@' + ctx.update.message.from.username : 'Отсутсвует'}</b>
-Номер телефона: <b>${ctx.update.message.text}</b>
+Номер телефона: <b>${ctx.session.phone}</b>
+Почта: <b>${ctx.update.message.text}</b>
 `
+deleteFromSession(ctx, 'phone')
+return template
 }
 
 const generateCaptcha = () => {
@@ -97,4 +100,4 @@ const kickUser = async (ctx, user) => {
 }
 
 
-module.exports = {getTemplateForWelcomeMessage,getTemplateForSavedNumber,  generateCaptcha, sheduleDeleteMessage, deleteAllMessages, sheduleUnban, kickUser}
+module.exports = {getTemplateForWelcomeMessage, getTemplateForSend, generateCaptcha, sheduleDeleteMessage, deleteAllMessages, sheduleUnban, kickUser}

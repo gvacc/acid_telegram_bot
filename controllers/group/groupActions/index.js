@@ -4,8 +4,9 @@ const telegram = require('../../../telegram')
 const logger = require('../../../util/logger')
 const Group = require('../../../model/Group')
 const User = require('../../../model/User')
+const Admin = require('../../../model/Admin')
 const {getButtons} = require('../../chat/welcomeMessage/helpers')
-const {getTemplateForWelcomeMessage, getTemplateForSavedNumber, generateCaptcha, sheduleDeleteMessage, deleteAllMessages, sheduleUnban, kickUser} = require('./helpers')
+const {getTemplateForWelcomeMessage, getTemplateForSend, generateCaptcha, sheduleDeleteMessage, deleteAllMessages, sheduleUnban, kickUser} = require('./helpers')
 const {saveToSession, deleteFromSession} = require('../../../util/session')
 
 const newMember = async ctx => {
@@ -171,7 +172,6 @@ const newMessage = async ctx => {
 				const firstName = ctx.update.message.from.first_name.substring(0, 15)
 				const group = await Group.findOne({groupId})
 				if(group.groupType === 'private') {
-					const user = await User.findOne({telegramId})
 					if(messageText.match(/^(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?$/)) {
 						saveToSession(ctx, 'phoneSceneMessages', [...ctx.session.phoneSceneMessages, messageId])
 						await deleteAllMessages(ctx, ctx.session.phoneSceneMessages, 'phoneSceneMessages')
@@ -181,20 +181,50 @@ const newMessage = async ctx => {
 						    { new: true }
 						)
 
-						try{
-							await telegram.sendMessage(+process.env.ADMIN_ID, getTemplateForSavedNumber(ctx), {parse_mode: 'html'})
-						} catch(e) {
-							logger.info(`Не удалось отправить номер администратору ${e}`)
-						}
-
 						deleteFromSession(ctx, 'phoneScene')
-						const sentPhoneConfirmMessage = await ctx.replyWithMarkdown(`[${firstName}](tg://user?id=${telegramId}) Спасибо, номер сохранен!`)
-						sheduleDeleteMessage(ctx, sentPhoneConfirmMessage.message_id, ms('3s'))
+						saveToSession(ctx, 'phone', messageText)
 
+
+						const sentPhoneConfirmMessage = await ctx.replyWithMarkdown(`[${firstName}](tg://user?id=${telegramId}), Спасибо, номер сохранен!\nОсталось отправить вашу почту!`)
+						sheduleDeleteMessage(ctx, sentPhoneConfirmMessage.message_id, ms('2m'))
+						
+						saveToSession(ctx, 'mailScene', true)
+						saveToSession(ctx, 'mailSceneMessages', [])
+						saveToSession(ctx, 'mailSceneMessages', [sentPhoneConfirmMessage.message_id])
 					} else {
-						const sentPhoneNotConfirmMessage = await ctx.replyWithMarkdown(`[${firstName}](tg://user?id=${telegramId}) Вы указали некорректный номер, попробуйте еще раз`, {reply_to_message_id: messageId})
+						const sentPhoneNotConfirmMessage = await ctx.replyWithMarkdown(`[${firstName}](tg://user?id=${telegramId}), Вы указали некорректный номер, попробуйте еще раз`, {reply_to_message_id: messageId})
 						saveToSession(ctx, 'phoneSceneMessages', [...ctx.session.phoneSceneMessages, sentPhoneNotConfirmMessage.message_id, messageId])
 						sheduleDeleteMessage(ctx, sentPhoneNotConfirmMessage.message_id, ms('2m'))
+						sheduleDeleteMessage(ctx, messageId, ms('2m'))
+					}
+				}
+			} else if(ctx.session.mailScene) {
+				const firstName = ctx.update.message.from.first_name.substring(0, 15)
+				const group = await Group.findOne({groupId})
+				if(group.groupType === 'private') {
+					if(messageText.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/)) {
+						saveToSession(ctx, 'mailSceneMessages', [...ctx.session.mailSceneMessages, messageId])
+						await deleteAllMessages(ctx, ctx.session.mailSceneMessages, 'mailSceneMessages')
+						await User.findOneAndUpdate(
+						    { telegramId },
+						    { mail: messageText },
+						    { new: true }
+						)
+						deleteFromSession(ctx, 'mailScene')
+
+						const sentMailConfirmMessage = await ctx.replyWithMarkdown(`[${firstName}](tg://user?id=${telegramId}), Спасибо, почта сохранена!\n`)
+						sheduleDeleteMessage(ctx, sentMailConfirmMessage.message_id, ms('3s'))
+						try{
+                            await telegram.sendMessage(1049739112, getTemplateForSend(ctx), {parse_mode: 'html'})
+                            await telegram.sendMessage(685876340, getTemplateForSend(ctx), {parse_mode: 'html'})
+                       	} catch(e) {
+                            logger.info(`Не удалось отправить номер администратору ${e}`)
+                       	}
+					} else {
+						const sentMailNotConfirmMessage = await ctx.replyWithMarkdown(`[${firstName}](tg://user?id=${telegramId}), Вы указали некорректную почту, попробуйте еще раз`, {reply_to_message_id: messageId})
+						sheduleDeleteMessage(ctx, sentMailNotConfirmMessage.message_id, ms('2m'))
+						sheduleDeleteMessage(ctx, messageId, ms('2m'))
+						saveToSession(ctx, 'mailSceneMessages', [...ctx.session.mailSceneMessages, sentMailNotConfirmMessage.message_id, messageId])
 					}
 				}
 			}
